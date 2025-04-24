@@ -10,15 +10,15 @@
 
   Cuando busco el producto '<busqueda>'
 
-  Y escojo el producto '<producto>'
-
-  Entonces verifico el precio '<precio>'
+  Y escojo el producto
 
   Y añado al carrito
 
-  Entonces visualizo el producto '<producto>' con el precio '<precio>'
+  Entonces verifico el precio
+
+  Y visualizo el carrito
 
   Ejemplos:
-  | url | busqueda | producto | precio |
+  | url | busqueda |
   ##@externaldata@parametros/Datos.xlsx@carrito
-  | | | | |
+   |https://es.aliexpress.com/   |Lapicero|

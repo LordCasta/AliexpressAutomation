@@ -1,10 +1,21 @@
 package com.aliexpress.es.stepDefinitions;
 
+import com.aliexpress.es.questions.ValidarPrecio;
+import com.aliexpress.es.questions.ValidarPrecioFinal;
+import com.aliexpress.es.tasks.AbrirProductoTask;
+import com.aliexpress.es.tasks.AñadirCarritoTask;
+import com.aliexpress.es.tasks.BuscarProductoTask;
+import com.aliexpress.es.tasks.VerCarritoTask;
 import io.cucumber.java.Before;
 import io.cucumber.java.es.*;
+import io.cucumber.java.tr.Ve;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import net.serenitybdd.screenplay.actions.Open;
+import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
 import static net.serenitybdd.screenplay.actors.OnStage.setTheStage;
+import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 
 public class AgregarCarritoStepDefinition {
 
@@ -14,33 +25,53 @@ public class AgregarCarritoStepDefinition {
     }
 
     @Dado("Que me encuentro en la página {string}")
-    public void queMeEncuentroEnLaPágina(String string) {
+    public void queMeEncuentroEnLaPágina(String url) {
         // Write code here that turns the phrase above into concrete actions
-
+        WebDriverManager.chromedriver().setup();
+        theActorCalled("robot").wasAbleTo(Open.url(url));
     }
     @Cuando("busco el producto {string}")
-    public void buscoElProducto(String string) {
+    public void buscoElProducto(String busqueda) {
         // Write code here that turns the phrase above into concrete actions
-
+       OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                       BuscarProductoTask.conLaBusqueda(busqueda)
+                );
     }
-    @Cuando("escojo el producto {string}")
-    public void escojoElProducto(String string) {
+    @Cuando("escojo el producto")
+    public void escojoElProducto() {
         // Write code here that turns the phrase above into concrete actions
-
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        AbrirProductoTask.conElProducto()
+                );
     }
-    @Entonces("verifico el precio {string}")
-    public void verificoElPrecio(String string) {
-        // Write code here that turns the phrase above into concrete actions
 
-    }
-    @Entonces("añado al carrito")
+    @Cuando("añado al carrito")
     public void añadoAlCarrito() {
         // Write code here that turns the phrase above into concrete actions
-
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        AñadirCarritoTask.conElCarrito()
+                );
     }
-    @Entonces("visualizo el producto {string} con el precio {string}")
-    public void visualizoElProductoConElPrecio(String string, String string2) {
+    @Entonces("verifico el precio")
+    public void verificoElPrecio() {
         // Write code here that turns the phrase above into concrete actions
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        ValidarPrecio.conElPrecio()
+                );
+    }
+
+    @Entonces("visualizo el carrito")
+    public void visualizoElCarrito() {
+        // Write code here that turns the phrase above into concrete actions
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        VerCarritoTask.conLosProductos(),
+                        ValidarPrecioFinal.conElPrecioFinal()
+                );
 
     }
 
